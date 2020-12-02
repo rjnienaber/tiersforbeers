@@ -1,15 +1,18 @@
 const debug = require('debug')('database');
 const Sequelize = require('sequelize');
 const { defineLocation } = require('./location');
+const { defineLog } = require('./log');
 
 class Database {
   constructor(sequelize) {
     this.sequelize = sequelize;
     this.locations = defineLocation(sequelize);
+    this.logs = defineLog(sequelize, this.locations);
   }
 
   async sync() {
-    return await this.locations.sync({ force: true });
+    await this.locations.sync();
+    return await this.logs.sync();
   }
 
   async close() {

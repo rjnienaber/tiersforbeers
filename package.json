@@ -1,29 +1,40 @@
 {
-	"name": "tiersforbeers",
-	"version": "0.0.1",
-	"description": "Turns gov.uk's coronavirus restrictions checker into an rss feed",
-	"main": "server.js",
-	"scripts": {
-		"start": "node server.js"
-	},
-	"dependencies": {
-		"cheerio": "^1.0.0-rc.3",
-		"debug": "^4.3.1",
-		"express": "^4.12.4",
-		"sequelize": "*",
-		"sqlite3": "*"
-	},
-	"devDependencies": {
-		"axios": "^0.21.0",
-		"chai": "^4.2.0",
-		"mocha": "^8.2.1",
-		"nock": "^13.0.5",
-		"node-record": "0.0.1"
-	},
-	"keywords": [
-		"node",
-		"express",
-		"sqlite3"
-	],
-	"license": "GPL-3.0-or-later"
+  "name": "tiersforbeers",
+  "version": "0.0.1",
+  "description": "Turns gov.uk's coronavirus restrictions checker into an rss feed",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test:prettier": "prettier -c '**/*.js'",
+    "test:unit": "mocha",
+    "format": "prettier -c '**/*.js' --write"
+  },
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.3",
+    "debug": "^4.3.1",
+    "express": "^4.12.4",
+    "sequelize": "*",
+    "sqlite3": "*"
+  },
+  "devDependencies": {
+    "axios": "^0.21.0",
+    "chai": "^4.2.0",
+    "eslint": "^7.14.0",
+    "mocha": "^8.2.1",
+    "nock": "^13.0.5",
+    "npm-run-all": "^4.1.5",
+    "prettier": "^2.2.1"
+  },
+  "keywords": [
+    "node",
+    "express",
+    "sqlite3"
+  ],
+  "license": "GPL-3.0-or-later",
+  "prettier": {
+    "singleQuote": true,
+    "trailingComma": "all",
+    "arrowParens": "always",
+    "printWidth": 120
+  }
 }

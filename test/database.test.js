@@ -24,13 +24,13 @@ describe('database', () => {
 
       const savedStatus = await db.locations.findOne({ where: { id: 1 } });
 
-      expect(savedStatus.id).to.not.be.null;
+      expect(savedStatus.id).to.not.equal(null);
       expect(savedStatus.name).to.equal(location.name);
       expect(savedStatus.postalCode).to.equal(location.postalCode);
       expect(savedStatus.council).to.equal(location.council);
       expect(savedStatus.tier).to.equal(location.tier);
-      expect(savedStatus.updatedAt).to.not.be.null;
-      expect(savedStatus.created_at).to.not.be.null;
+      expect(savedStatus.updatedAt).to.not.equal(null);
+      expect(savedStatus.created_at).to.not.equal(null);
     });
 
     it('perform upsert', async () => {
@@ -53,7 +53,7 @@ describe('database', () => {
 
       await db.locations.upsert([holmes, kennedy]);
 
-      allStatuses = await db.locations.findAll();
+      const allStatuses = await db.locations.findAll();
       expect(allStatuses.length).to.equal(2);
       expect(allStatuses[0].tier).to.equal(holmes.tier);
       expect(allStatuses[1].tier).to.equal(kennedy.tier);

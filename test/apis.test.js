@@ -41,7 +41,7 @@ describe('apis', () => {
 
     it('returns undefined for nonsense address', async () => {
       const result = await runPostalCodeCheck('check_invalid_postcode.json', 'BLAH BLAH');
-      expect(result).to.be.undefined;
+      expect(result).to.equal(undefined);
     });
   });
 });

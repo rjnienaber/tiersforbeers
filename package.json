@@ -1,7 +1,7 @@
 {
-	"name": "sqlite3-demo",
+	"name": "tiersforbeers",
 	"version": "0.0.1",
-	"description": "Example app showing use of SQLite3 using the Sequelize ORM",
+	"description": "Turns gov.uk's coronavirus restrictions checker into an rss feed",
 	"main": "server.js",
 	"scripts": {
 		"start": "node server.js"

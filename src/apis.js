@@ -25,7 +25,7 @@ async function checkPostalCode(postalCode) {
 
   const [tierText, council] = parseHtmlForDetails(response.data);
   if (!tierText || !council) {
-    return undefined;
+    throw new Error(`Unable to retrieve tier for postal code '${postalCode}'`);
   }
 
   const matches = /This area is in (.*)/.exec(tierText);

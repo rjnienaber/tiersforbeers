@@ -1,7 +1,11 @@
+const chai = require('chai');
 const { expect } = require('chai');
+const chaiAsPromised = require('chai-as-promised');
 const { back: nockBack } = require('nock');
 const path = require('path');
 const { checkPostalCode } = require('../src/apis');
+
+chai.use(chaiAsPromised);
 
 nockBack.fixtures = path.resolve(path.join(__dirname, 'fixtures'));
 nockBack.setMode('record'); // https://github.com/nock/nock#modes
@@ -39,9 +43,9 @@ describe('apis', () => {
       });
     });
 
-    it('returns undefined for nonsense address', async () => {
-      const result = await runPostalCodeCheck('check_invalid_postcode.json', 'BLAH BLAH');
-      expect(result).to.equal(undefined);
+    it('throws error when no result for postal code', async () => {
+      const promise = runPostalCodeCheck('check_invalid_postcode.json', 'BLAH BLAH');
+      await expect(promise).to.eventually.be.rejectedWith("Unable to retrieve tier for postal code 'BLAH BLAH'");
     });
   });
 });

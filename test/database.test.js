@@ -12,7 +12,7 @@ describe('database', () => {
     db = await createDatabase();
     holmes = {
       name: 'Sherlock Holmes',
-      postalCode: 'NW1 6XE',
+      postalCode: 'NW16XE',
       council: 'City of Westminster',
       tier: 'Tier 2: High alert',
     };
@@ -39,23 +39,38 @@ describe('database', () => {
       expect(savedStatus.createdAt).to.not.equal(null);
     });
 
-    it('perform upsert', async () => {
+    it('#updateLocations', async () => {
+      const potter = {
+        name: 'Beatrix Potter',
+        postalCode: 'LA220LF',
+        council: 'South Lakeland District Council',
+        tier: 'Tier 2: High alert',
+      };
+
+      await db.locations.create(potter);
       await db.locations.create(holmes);
       holmes.tier = 'Tier 3: Very High alert';
 
       const kennedy = {
         name: 'Kevin Kennedy',
-        postalCode: 'M50 2EQ',
+        postalCode: 'M502EQ',
         council: 'Salford City Council',
         tier: 'Tier 3: Very High alert',
       };
 
-      await db.locations.upsert([holmes, kennedy]);
+      const result = await db.locations.updateLocations([potter, holmes, kennedy]);
+      expect(result.length).to.equal(2);
 
-      const allStatuses = await db.locations.findAll();
-      expect(allStatuses.length).to.equal(2);
-      expect(allStatuses[0].tier).to.equal(holmes.tier);
-      expect(allStatuses[1].tier).to.equal(kennedy.tier);
+      const [savedHolmes, savedKennedy] = result;
+
+      expect(savedHolmes.postalCode).to.equal(holmes.postalCode);
+      expect(savedHolmes.tier).to.equal(holmes.tier);
+
+      expect(savedKennedy.postalCode).to.equal(kennedy.postalCode);
+      expect(savedKennedy.tier).to.equal(kennedy.tier);
+
+      const allLocations = await db.locations.findAll();
+      expect(allLocations.length).to.equal(3);
     });
   });
 

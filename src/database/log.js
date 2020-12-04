@@ -1,6 +1,6 @@
 const Sequelize = require('sequelize');
 
-function defineLog(sequelize, locationsModel) {
+function defineLog(sequelize, locationsModel, config) {
   const model = sequelize.define(
     'log',
     {
@@ -20,6 +20,14 @@ function defineLog(sequelize, locationsModel) {
 
   model.belongsTo(locationsModel, { foreignKey: { allowNull: false } });
   locationsModel.hasMany(model);
+
+  const latestOptions = { limit: config.feed.size, order: [['id', 'DESC']] };
+  model.latest = async () => model.findAll({ include: ['location'], ...latestOptions });
+
+  model.removeOldItems = async () => {
+    const latestIds = await model.findAll({ attributes: ['id'], raw: true, ...latestOptions });
+    return model.destroy({ where: { id: { [Sequelize.Op.notIn]: latestIds.map((l) => l.id) } } });
+  };
 
   return model;
 }

@@ -100,5 +100,33 @@ describe('database', () => {
         'notNull Violation: log.locationId cannot be null',
       );
     });
+
+    it('retrieves latest rows from log', async () => {
+      const location = await db.locations.create(holmes);
+      const logs = [...Array(20).keys()].map((_, i) => ({ tier: `Tier ${i}`, locationId: location.id }));
+      await db.logs.bulkCreate(logs);
+
+      const latestLogs = await db.logs.latest();
+      const ids = latestLogs.map((log) => log.id);
+      expect(ids).to.deep.equal([20, 19, 18, 17, 16, 15, 14, 13, 12, 11]);
+
+      const log = latestLogs[0];
+      expect(log.location).to.not.equal(undefined);
+      expect(log.location.id).to.equal(location.id);
+    });
+
+    it('clears out old log items', async () => {
+      const location = await db.locations.create(holmes);
+      const logs = [...Array(20).keys()].map((_, i) => ({ tier: `Tier ${i}`, locationId: location.id }));
+      await db.logs.bulkCreate(logs);
+
+      await db.logs.removeOldItems();
+
+      const allLogs = await db.logs.findAll();
+      expect(allLogs.length).to.equal(10);
+
+      const ids = allLogs.map((log) => log.id);
+      expect(ids).to.deep.equal([11, 12, 13, 14, 15, 16, 17, 18, 19, 20]);
+    });
   });
 });

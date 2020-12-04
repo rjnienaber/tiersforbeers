@@ -1,13 +1,14 @@
 const debug = require('debug')('database');
 const Sequelize = require('sequelize');
+const config = require('../config');
 const { defineLocation } = require('./location');
 const { defineLog } = require('./log');
 
 class Database {
-  constructor(sequelize) {
+  constructor(sequelize, appConfig) {
     this.sequelize = sequelize;
     this.locations = defineLocation(sequelize);
-    this.logs = defineLog(sequelize, this.locations);
+    this.logs = defineLog(sequelize, this.locations, appConfig);
   }
 
   async sync() {
@@ -27,7 +28,7 @@ async function createDatabase(filePath, enableLogging = false) {
 
   const sequelize = new Sequelize(options);
   await sequelize.authenticate();
-  const db = new Database(sequelize);
+  const db = new Database(sequelize, config);
   await db.sync();
 
   return db;

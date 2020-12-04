@@ -4,26 +4,26 @@ const { processQueryString } = require('../src/querystring_processor');
 describe('querystring parser', () => {
   describe('#processQueryString', () => {
     it('handles single postal code', () => {
-      const locations = processQueryString({ 'Sherlock Holmes': 'NW1 6XE' });
+      const locations = processQueryString({ 'Sherlock Holmes': ' Nw1 6xE ' });
 
       expect(locations).to.deep.equal([
         {
           name: 'Sherlock Holmes',
-          postalCode: 'NW1 6XE',
+          postalCode: 'NW16XE',
         },
       ]);
     });
 
     it('handles multiple postal codes', () => {
-      const locations = processQueryString({ 'Sherlock Holmes': 'NW1 6XE', 'Kevin Kennedy': 'M50 2EQ' });
+      const locations = processQueryString({ 'Sherlock Holmes': ' NW1 6XE', 'Kevin Kennedy': 'M502EQ' });
       expect(locations).to.deep.equal([
         {
           name: 'Sherlock Holmes',
-          postalCode: 'NW1 6XE',
+          postalCode: 'NW16XE',
         },
         {
           name: 'Kevin Kennedy',
-          postalCode: 'M50 2EQ',
+          postalCode: 'M502EQ',
         },
       ]);
     });

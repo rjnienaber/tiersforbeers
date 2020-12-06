@@ -101,6 +101,17 @@ describe('database', () => {
       );
     });
 
+    it('#uploadLogs', async () => {
+      const locations = await db.locations.updateLocations([potter, holmes]);
+      await db.logs.updateLogs(locations);
+
+      const savedLog = await db.logs.findAll();
+      expect(savedLog.length).to.equal(2);
+
+      expect(savedLog[0].tier).to.equal(potter.tier);
+      expect(savedLog[1].tier).to.equal(holmes.tier);
+    });
+
     it('retrieves latest rows from log', async () => {
       const location = await db.locations.create(holmes);
       const potterLocation = await db.locations.create(potter);

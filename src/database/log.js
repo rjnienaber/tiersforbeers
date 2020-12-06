@@ -21,6 +21,11 @@ function defineLog(sequelize, locationsModel, config) {
   model.belongsTo(locationsModel, { foreignKey: { allowNull: false } });
   locationsModel.hasMany(model);
 
+  model.updateLogs = async (locations) => {
+    const logs = locations.map((l) => ({ tier: l.tier, locationId: l.id }));
+    return await model.bulkCreate(logs);
+  };
+
   model.latest = async (postalCodes) => {
     return model.findAll({
       limit: config.feed.size,

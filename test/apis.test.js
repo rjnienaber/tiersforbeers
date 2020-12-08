@@ -4,6 +4,7 @@ const chaiAsPromised = require('chai-as-promised');
 const { back: nockBack } = require('nock');
 const path = require('path');
 const { checkPostalCode } = require('../src/apis');
+const config = require('../src/config');
 
 chai.use(chaiAsPromised);
 
@@ -14,7 +15,7 @@ async function runPostalCodeCheck(cachedFile, postalCode) {
   return await new Promise((resolve, reject) => {
     nockBack(cachedFile, async (done) => {
       try {
-        const result = await checkPostalCode(postalCode);
+        const result = await checkPostalCode(postalCode, config);
         resolve(result);
       } catch (err) {
         reject(err);

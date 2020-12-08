@@ -2,8 +2,6 @@ const axios = require('axios');
 const cheerio = require('cheerio');
 const debug = require('debug')('apis');
 
-const GOV_UK_CHECKER_URL = 'https://www.gov.uk/find-coronavirus-local-restrictions';
-
 function parseHtmlForDetails(html) {
   try {
     const $ = cheerio.load(html);
@@ -20,8 +18,8 @@ function parseHtmlForDetails(html) {
   }
 }
 
-async function checkPostalCode(postalCode) {
-  const response = await axios.post(GOV_UK_CHECKER_URL, { 'postcode-lookup': postalCode });
+async function checkPostalCode(postalCode, config) {
+  const response = await axios.post(config.govUk.url, { 'postcode-lookup': postalCode });
 
   const [tierText, council] = parseHtmlForDetails(response.data);
   if (!tierText || !council) {

@@ -118,7 +118,7 @@ describe('database', () => {
 
       const logs = [...Array(20).keys()].map((_, i) => ({ tier: `Tier ${i}`, locationId: location.id }));
       await db.logs.bulkCreate(logs);
-      await db.logs.create({ tier: `Tier Potter`, locationId: potterLocation.id });
+      await db.logs.create({ tier: 'Tier Potter', locationId: potterLocation.id });
 
       const latestLogs = await db.logs.latest(location.postalCode);
       const ids = latestLogs.map((log) => log.id);

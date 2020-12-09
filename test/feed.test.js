@@ -101,7 +101,7 @@ describe('feed', () => {
         const testConfig = { ...config, appUrl: 'http://localhost:8000' };
 
         const now = new Date();
-        const xml = await generateFeedFile(path, latestLogs, testConfig);
+        const xml = await generateFeedFile(latestLogs, testConfig);
         const getElement = (tag) => new RegExp('<' + tag + '>(.+)</' + tag + '>').exec(xml)[1];
 
         // channel
@@ -119,7 +119,7 @@ describe('feed', () => {
 
         // item
         expect(xml).to.contains(
-          '<title><![CDATA[Change detected for area \'Sherlock Holmes\' (NW16XE): Tier 2: High alert]]></title>'
+          "<title><![CDATA[Change detected for area 'Sherlock Holmes' (NW16XE): Tier 2: High alert]]></title>",
         );
         expect(xml).to.contains(`<link>${config.govUk.url}</link>`);
         expect(xml).to.contains(`<guid>http://localhost:8000/1</guid>`);

@@ -13,11 +13,11 @@ async function getFeedFileTime(feedFilePath) {
   try {
     stat = await fs.stat(feedFilePath);
   } catch (err) {
-    if (err.code !== 'ENOENT') {
-      throw err;
+    if (err.code === 'ENOENT') {
+      return 'absent';
     }
 
-    return 'absent';
+    throw err;
   }
 
   const fileDate = new Date(stat.mtime.toISOString().slice(0, 10));
@@ -34,10 +34,18 @@ async function getFeedFileTime(feedFilePath) {
 
 async function updateFeedFileTime(feedFilePath) {
   const now = new Date();
-  await fs.utimes(feedFilePath, now, now);
+  try {
+    await fs.utimes(feedFilePath, now, now);
+  } catch (err) {
+    if (err.code === 'ENOENT') {
+      const file = await fs.open(feedFilePath, 'w');
+      await file.close();
+    }
+    throw err;
+  }
 }
 
-function generateFeedFile(feedFilePath, logs, config) {
+function generateFeedFile(logs, config) {
   const now = new Date();
   const postalCodes = logs.map((l) => l.location.postalCode);
   const link = `${config.appUrl}/rss.xml`;

@@ -1,16 +1,20 @@
 const axios = require('axios');
 const cheerio = require('cheerio');
 const debug = require('debug')('apis');
+const semaphore = require('semaphore');
+
+const lock = semaphore(2);
 
 function parseHtmlForDetails(html) {
   try {
     const $ = cheerio.load(html);
 
-    const tierElement = $('#content > div > div > div > div > h1');
+    const tierElement = $('#content > div > div > div > div > h1 > span');
     const tierText = tierElement[0].children[0].data.trim();
 
-    const councilElement = $('#content > div > div > div > p:nth-child(2) > strong:nth-child(2)');
+    const councilElement = $('#content > div > div > div > p > strong:nth-child(2)');
     const council = councilElement[0].children[0].data.trim();
+
     return [tierText, council];
   } catch (err) {
     debug('Failed to find message in postal code');
@@ -18,19 +22,38 @@ function parseHtmlForDetails(html) {
   }
 }
 
+async function checkPostalCodes(postalCodes, config) {
+  const govUkDetails = {};
+  await Promise.all(
+    postalCodes.map((ps) => {
+      return new Promise((resolve, reject) => {
+        lock.take(async () => {
+          try {
+            govUkDetails[ps] = await checkPostalCode(ps, config);
+            resolve();
+          } catch (err) {
+            reject(err);
+          } finally {
+            lock.leave();
+          }
+        });
+      });
+    }),
+  );
+  return govUkDetails;
+}
+
 async function checkPostalCode(postalCode, config) {
   const response = await axios.post(config.govUk.url, { 'postcode-lookup': postalCode });
 
-  const [tierText, council] = parseHtmlForDetails(response.data);
-  if (!tierText || !council) {
+  const [tier, council] = parseHtmlForDetails(response.data);
+  if (!tier || !council) {
     throw new Error(`Unable to retrieve tier for postal code '${postalCode}'`);
   }
 
-  const matches = /This area is in (.*)/.exec(tierText);
-  if (matches) {
-    const [, tier] = matches;
-    return { council, tier };
-  }
-  return undefined;
+  return { council, tier };
 }
-module.exports.checkPostalCode = checkPostalCode;
+module.exports = {
+  checkPostalCodes,
+  checkPostalCode,
+};

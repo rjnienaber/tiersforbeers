@@ -45,5 +45,9 @@ describe('querystring parser', () => {
         "More than one postal code given for 'John Doe': 'Blah Blah', 'Rhubarb & Custard'",
       );
     });
+
+    it('throws an error when no postal codes are provided', () => {
+      expect(() => processQueryString({})).to.throw('No locations provided');
+    });
   });
 });

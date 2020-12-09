@@ -1,6 +1,11 @@
 const { isValid } = require('postcode');
 
 function processQueryString(queryString) {
+  const entries = Object.entries(queryString);
+  if (!entries.length) {
+    throw new Error('No locations provided');
+  }
+
   const [locations, invalidPostalCodes] = Object.entries(queryString).reduce(
     (acc, [name, value]) => {
       if (Array.isArray(value)) {

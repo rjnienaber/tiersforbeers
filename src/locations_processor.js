@@ -1,3 +1,4 @@
+const { promises: fs } = require('fs');
 const { updateFeedFileTime } = require('./feed');
 const { generateFeedFile } = require('./feed');
 const { checkPostalCodes } = require('./apis');
@@ -5,7 +6,6 @@ const { createDatabase } = require('./database');
 const { getFeedFileTime } = require('./feed');
 const { generateFeedFilePath } = require('./feed');
 const { processQueryString } = require('./querystring_processor');
-const { promises: fs } = require('fs');
 
 class LocationsProcessor {
   constructor(config, queryString) {

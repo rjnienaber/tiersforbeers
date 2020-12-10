@@ -56,8 +56,8 @@ describe('apis', () => {
       const result = await new Promise((resolve, reject) => {
         nockBack('check_multiple_postal_codes.json', async (done) => {
           try {
-            const result = await checkPostalCodes(['NW16XE', 'M502EQ'], config);
-            resolve(result);
+            const checkedPostalCodes = await checkPostalCodes(['NW16XE', 'M502EQ'], config);
+            resolve(checkedPostalCodes);
           } catch (err) {
             reject(err);
           } finally {

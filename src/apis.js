@@ -22,6 +22,17 @@ function parseHtmlForDetails(html) {
   }
 }
 
+async function checkPostalCode(postalCode, config) {
+  const response = await axios.post(config.govUk.url, { 'postcode-lookup': postalCode });
+
+  const [tier, council] = parseHtmlForDetails(response.data);
+  if (!tier || !council) {
+    throw new Error(`Unable to retrieve tier for postal code '${postalCode}'`);
+  }
+
+  return { council, tier };
+}
+
 async function checkPostalCodes(postalCodes, config) {
   const govUkDetails = {};
   await Promise.all(
@@ -43,16 +54,6 @@ async function checkPostalCodes(postalCodes, config) {
   return govUkDetails;
 }
 
-async function checkPostalCode(postalCode, config) {
-  const response = await axios.post(config.govUk.url, { 'postcode-lookup': postalCode });
-
-  const [tier, council] = parseHtmlForDetails(response.data);
-  if (!tier || !council) {
-    throw new Error(`Unable to retrieve tier for postal code '${postalCode}'`);
-  }
-
-  return { council, tier };
-}
 module.exports = {
   checkPostalCodes,
   checkPostalCode,

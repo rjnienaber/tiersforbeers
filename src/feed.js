@@ -23,13 +23,11 @@ async function getFeedFileTime(feedFilePath) {
   const fileDate = new Date(stat.mtime.toISOString().slice(0, 10));
   const currentDate = new Date(new Date().toISOString().slice(0, 10));
 
-  if (fileDate.getTime() === currentDate.getTime()) {
+  if (fileDate.getTime() >= currentDate.getTime()) {
     return 'current';
-  } else if (fileDate < currentDate) {
-    return 'outdated';
   }
 
-  return 'absent';
+  return 'outdated';
 }
 
 async function updateFeedFileTime(feedFilePath) {
@@ -64,10 +62,9 @@ function generateFeedFile(logs, config) {
 
   logs.forEach((log) => {
     const {
-      id,
-      createdAt,
       location: { name, postalCode, tier, council },
     } = log;
+    const { id, createdAt } = log;
     const title = `Change detected for area '${name}' (${postalCode}): ${tier}`;
     const description =
       `A tier change has been detected for area '${name}' (${postalCode}), ` +

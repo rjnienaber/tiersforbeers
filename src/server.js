@@ -32,7 +32,7 @@ app.get(
       return;
     }
 
-    debug(`Changed locations detected. Creating new feed file.`);
+    debug('Changed locations detected. Creating new feed file.');
     await locationsProcessor.createFeedFile(changedLocations);
 
     debug(`Serving existing file from ${locationsProcessor.feedFilePath}`);

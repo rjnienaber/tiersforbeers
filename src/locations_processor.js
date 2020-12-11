@@ -1,3 +1,4 @@
+const debug = require('debug')('tiersforbeers:locations_processor');
 const { promises: fs } = require('fs');
 const { updateFeedFileTime } = require('./feed');
 const { generateFeedFile } = require('./feed');

@@ -1,4 +1,4 @@
-const debug = require('debug')('database');
+const debug = require('debug')('tiersforbeers:database');
 const Sequelize = require('sequelize');
 const config = require('../config');
 const { defineLocation } = require('./location');

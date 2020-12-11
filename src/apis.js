@@ -1,6 +1,6 @@
 const axios = require('axios');
 const cheerio = require('cheerio');
-const debug = require('debug')('apis');
+const debug = require('debug')('tiersforbeers:apis');
 const semaphore = require('semaphore');
 
 const lock = semaphore(2);

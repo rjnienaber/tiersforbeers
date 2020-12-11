@@ -1,4 +1,4 @@
-const debug = require('debug')('server');
+const debug = require('debug')('tiersforbeers:server');
 const express = require('express');
 const asyncHandler = require('express-async-handler');
 const config = require('./config');

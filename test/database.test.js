@@ -16,7 +16,7 @@ describe('database', () => {
   let db;
   let holmes;
   beforeEach(async () => {
-    db = await createDatabase();
+    db = await createDatabase({ databaseFilePath: '', feed: { size: 10 } });
     holmes = {
       name: 'Sherlock Holmes',
       postalCode: 'NW16XE',

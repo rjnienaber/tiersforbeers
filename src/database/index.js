@@ -1,6 +1,5 @@
 const debug = require('debug')('tiersforbeers:database');
 const Sequelize = require('sequelize');
-const config = require('../config');
 const { defineLocation } = require('./location');
 const { defineLog } = require('./log');
 
@@ -21,9 +20,8 @@ class Database {
   }
 }
 
-async function createDatabase(filePath, enableLogging = false) {
-  debug(`Database file path: ${filePath}`);
-  const options = { logging: enableLogging, dialect: 'sqlite', storage: filePath };
+async function createDatabase(config, enableLogging = false) {
+  const options = { logging: enableLogging, dialect: 'sqlite', storage: config.databaseFilePath };
   debug('Database options %O', options);
 
   const sequelize = new Sequelize(options);

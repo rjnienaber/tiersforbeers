@@ -77,7 +77,7 @@ describe('feed', () => {
     describe('#generateFeedFile', () => {
       let db;
       beforeEach(async () => {
-        db = await createDatabase();
+        db = await createDatabase({ databaseFilePath: '', feed: { size: 10 } });
       });
 
       afterEach(async () => {
@@ -87,7 +87,7 @@ describe('feed', () => {
       });
 
       it('generates xml file', async () => {
-        db = await createDatabase();
+        db = await createDatabase({ databaseFilePath: '', feed: { size: 10 } });
         const holmes = {
           name: 'Sherlock Holmes',
           postalCode: 'NW16XE',

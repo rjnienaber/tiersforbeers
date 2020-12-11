@@ -35,7 +35,7 @@ class LocationsProcessor {
 
   async createDatabase() {
     if (!this.cachedDb) {
-      this.cachedDb = await createDatabase(this.config.databaseFilePath);
+      this.cachedDb = await createDatabase(this.config);
     }
     return this.cachedDb;
   }

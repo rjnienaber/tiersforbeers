@@ -6,7 +6,7 @@ Turns the [gov.uk](https://www.gov.uk/find-coronavirus-local-restrictions) coron
 Why? Because I got tired of checking the location tier status of my friends. This app takes in a query string 
 of locations/postal codes and generates an RSS feed once a day, showing any changes in tier status.
  
-# Installation (Glitch) <img src="https://cdn.glitch.com/2bdfb3f8-05ef-4035-a06e-2043962a3a13%2Flogo-day.svg" width="35" alt="glitch logo">
+# Installation (Glitch) 
 1. Create a new account or sign into [Glitch](https://glitch.com/)
 2. Click `New Project` and in the popup click the `Import from GitHub` button.
 3. Paste in the GitHub repo for the tiersforbeers project: https://github.com/rjnienaber/tiersforbeers
@@ -26,4 +26,4 @@ There's currently no UI to this so you have to construct the RSS feed url yourse
 # Feedback
 Bugs? Feature Requests? File an issue on [GitHub](https://github.com/rjnienaber/tiersforbeers/issues).
 
-[example]: example.png "RSS Example text"
+[example]: https://github.com/rjnienaber/tiersforbeers/blob/master/example.png?raw=true "RSS Example text"

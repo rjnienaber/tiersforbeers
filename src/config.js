@@ -1,7 +1,10 @@
 const path = require('path');
 
-const dataDir = path.resolve(path.join(__dirname, '..', '.data'));
+const appDir = path.resolve(path.join(__dirname, '..'));
+const dataDir = path.join(appDir, '.data');
+
 const databaseFilePath = path.join(dataDir, 'db.sqlite');
+const readmeFilePath = path.join(appDir, 'README.md');
 
 let appUrl = '';
 
@@ -11,8 +14,10 @@ if (process.env.PROJECT_DOMAIN) {
 }
 
 const config = {
+  appDir,
   dataDir,
   databaseFilePath,
+  readmeFilePath,
   appUrl,
   govUk: {
     url: 'https://www.gov.uk/find-coronavirus-local-restrictions',

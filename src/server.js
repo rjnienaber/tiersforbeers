@@ -39,6 +39,10 @@ app.get(
   }),
 );
 
+app.get('/', (request, response) => {
+  response.sendFile(config.readmeFilePath);
+});
+
 const listener = app.listen(process.env.PORT, () => {
   // eslint-disable-next-line no-console
   console.log(`Your app is listening on port ${listener.address().port}`);

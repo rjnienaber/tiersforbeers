@@ -12,6 +12,9 @@
     "test:unit": "mocha",
     "format": "prettier -c '**/*.js' --write"
   },
+  "engines": {
+    "node": "12.x"
+  },
   "dependencies": {
     "axios": "^0.21.0",
     "cheerio": "^1.0.0-rc.3",

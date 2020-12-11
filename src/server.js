@@ -40,6 +40,7 @@ app.get(
 );
 
 app.get('/', (request, response) => {
+  response.setHeader('content-type', 'text/plain');
   response.sendFile(config.readmeFilePath);
 });
 

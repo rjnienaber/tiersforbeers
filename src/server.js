@@ -17,26 +17,21 @@ app.get(
     const locationsProcessor = new LocationsProcessor(config, request.query);
     try {
       const result = await locationsProcessor.getFeedFileTime();
-      debug(`Retrieved feed file time: '${result}'`);
       if (result === 'current') {
         sendFeedFile(locationsProcessor, response);
         return;
       }
 
-      const changedLocations = await locationsProcessor.getChangedLocations();
-      debug(`Number of changed locations: ${changedLocations.length}`);
+      const changedLocations = await locationsProcessor.checkChangedLocations();
 
-      if (changedLocations.length) {
-        debug('Changed locations detected. Creating new feed file.');
-        await locationsProcessor.createFeedFile(changedLocations);
-      } else if (result !== 'absent') {
-        debug('Updating feed file time to now');
+      if (!changedLocations && result !== 'absent') {
         await locationsProcessor.updateFeedFileTime();
 
         sendFeedFile(locationsProcessor, response);
         return;
       }
 
+      await locationsProcessor.createFeedFile();
       sendFeedFile(locationsProcessor, response);
     } finally {
       await locationsProcessor.close();

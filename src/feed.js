@@ -1,3 +1,4 @@
+const debug = require('debug')('tiersforbeers:feed');
 const path = require('path');
 const { Feed } = require('feed');
 const { promises: fs } = require('fs');
@@ -32,6 +33,7 @@ async function getFeedFileTime(feedFilePath) {
 
 async function updateFeedFileTime(feedFilePath) {
   const now = new Date();
+  debug(`Updating feed file time to ${now}`);
   try {
     await fs.utimes(feedFilePath, now, now);
   } catch (err) {

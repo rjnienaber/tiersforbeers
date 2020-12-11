@@ -1,3 +1,4 @@
+const debug = require('debug')('tiersforbeers:locations_processor');
 const { promises: fs } = require('fs');
 const { updateFeedFileTime } = require('./feed');
 const { generateFeedFile } = require('./feed');
@@ -30,7 +31,9 @@ class LocationsProcessor {
   }
 
   async getFeedFileTime() {
-    return await getFeedFileTime(this.feedFilePath);
+    const feedFileTime = await getFeedFileTime(this.feedFilePath);
+    debug(`Retrieved feed file time: '${feedFileTime}'`);
+    return feedFileTime;
   }
 
   async createDatabase() {
@@ -40,21 +43,32 @@ class LocationsProcessor {
     return this.cachedDb;
   }
 
-  async getChangedLocations() {
+  async checkChangedLocations() {
+    debug(`Checking: ${this.postalCodes.length} postal codes`);
     const checkedPostalCodes = await checkPostalCodes(this.postalCodes, this.config);
     const locations = this.queryStringLocations.map((q) => ({ ...q, ...checkedPostalCodes[q.postalCode] }));
 
     const db = await this.createDatabase();
-    return await db.locations.updateLocations(locations);
+    const changedLocations = await db.locations.updateLocations(locations);
+    debug(`Number of changed locations: ${changedLocations.length}`);
+
+    const result = changedLocations.length > 0;
+    debug(`Changed locations: ${result}`);
+
+    if (result) {
+      await db.logs.updateLogs(changedLocations);
+    }
+
+    return result;
   }
 
   async updateFeedFileTime() {
     return await updateFeedFileTime(this.feedFilePath);
   }
 
-  async createFeedFile(changedLocations) {
+  async createFeedFile() {
+    debug(`Creating new feed file at ${this.feedFilePath}`);
     const db = await this.createDatabase();
-    await db.logs.updateLogs(changedLocations);
     const latestLogs = await db.logs.latest(this.postalCodes);
     const feedFileContent = generateFeedFile(latestLogs, this.config);
     await fs.writeFile(this.feedFilePath, feedFileContent);

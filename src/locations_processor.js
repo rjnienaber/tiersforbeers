@@ -1,4 +1,3 @@
-const debug = require('debug')('tiersforbeers:locations_processor');
 const { promises: fs } = require('fs');
 const { updateFeedFileTime } = require('./feed');
 const { generateFeedFile } = require('./feed');
@@ -59,6 +58,12 @@ class LocationsProcessor {
     const latestLogs = await db.logs.latest(this.postalCodes);
     const feedFileContent = generateFeedFile(latestLogs, this.config);
     await fs.writeFile(this.feedFilePath, feedFileContent);
+  }
+
+  async close() {
+    if (this.cachedDb) {
+      await this.cachedDb.close();
+    }
   }
 }
 

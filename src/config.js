@@ -7,7 +7,7 @@ let appUrl = '';
 
 // use project name from glitch to get hosted url
 if (process.env.PROJECT_DOMAIN) {
-  appUrl = `https://${process.env.PROJECT_DOMAIN}.glitch.me`
+  appUrl = `https://${process.env.PROJECT_DOMAIN}.glitch.me`;
 }
 
 const config = {

@@ -23,6 +23,7 @@ function parseHtmlForDetails(html) {
 }
 
 async function checkPostalCode(postalCode, config) {
+  debug(`Looking up postal code for ${postalCode}`);
   const response = await axios.post(config.govUk.url, { 'postcode-lookup': postalCode });
 
   const [tier, council] = parseHtmlForDetails(response.data);

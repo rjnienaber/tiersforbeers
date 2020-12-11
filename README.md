@@ -8,7 +8,7 @@ does is take in a query string of locations/postal codes and generate an RSS fee
 changes in tier status. 
 
 # Installation (Glitch)
-1. Create a new account or sign into Glitch
+1. Create a new account or sign into [Glitch](https://glitch.com/)
 2. Navigate to [tiersforbeers](https://glitch.com/edit/#!/tiersforbeers?path=README.md%3A1%3A0) code view
 3. Click on the `tiersforbeers` dropdown in the top left and click the `Remix Project` button.
 4. A new project should have been generated with the same code. 

@@ -45,6 +45,14 @@ describe('apis', () => {
       });
     });
 
+    it('retrieves details for Bromley', async () => {
+      const result = await runPostalCodeCheck('check_bromley.json', 'BR36TA');
+      expect(result).to.deep.equal({
+        council: 'London Borough of Bromley',
+        tier: 'Tier 2: High alert',
+      });
+    })
+
     it('throws error when no result for postal code', async () => {
       const promise = runPostalCodeCheck('check_invalid_postcode.json', 'BLAH BLAH');
       await expect(promise).to.eventually.be.rejectedWith("Unable to retrieve tier for postal code 'BLAH BLAH'");
